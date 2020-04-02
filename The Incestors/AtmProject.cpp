@@ -7,6 +7,7 @@
 #include <sstream>
 #include <iomanip>
 #include <vector>
+#include <conio.h>
 using namespace std;
 
 #define clear "cls"
@@ -37,7 +38,7 @@ struct Utility {
         }
         return temp;
     }
-    long long formatAccNumber(string aNumber) {
+    long long formatAccNumber(string aNumber) { // Formatting Account Number into Number
         long long num = 0;
         stringstream st; st << aNumber; st >> num;
         return num;
@@ -51,7 +52,7 @@ struct Utility {
         OFFSET << "Age: " << client->age << OFFSET << "Contact #: " << client->cNumber << OFFSET << "Balance: " << this->formatValue(client->balance);
         return st.str();
     }
-    string formatInformation(Depositor client) {
+    string formatInformation(Depositor client) { // Formatting and Printing the Sign-Up Information of the Client
         ostringstream st; st << OFFSET << "Account Number: " << this->formatAccNumber(&client) << OFFSET << "Name: " << this->formatName(&client) <<
         OFFSET << "Age: " << client.age << OFFSET << "Contact #: " << client.cNumber << OFFSET << "Pin: " << client.pin;
         return st.str();
@@ -194,7 +195,7 @@ void transactionSegments(AtmMachine *atm, char cmd) { // Segment/Microservices o
                 continue;
             }
             cout << OFFSET << BORDER << OFFSET << "Are You Sure You Want to Withdraw" << OFFSET << "[" << atm->utils.formatValue(money) << "]" << OFFSET <<
-            "From Your Account?(Yes[1]/No[0]):\n" << OFFSET << "==> : ", cin >> cmd;
+            "From Your Account?(Yes[1]/No[0]):\n" << OFFSET << "==> : ", cmd = getch();
             if(cmd != '1') continue;
             atm->withdraw(money);
             cout << OFFSET << BORDER << OFFSET << "Money has been Withdrawn!\n\n"; system(delay);
@@ -206,7 +207,7 @@ void transactionSegments(AtmMachine *atm, char cmd) { // Segment/Microservices o
             cout << "\n" << assets[0] << "\n" << assets[6] << OFFSET << "==> : ", cin >> money;
             if(money == -1) { system(clear); break; }
             cout << OFFSET << BORDER << OFFSET << "Are You Sure You Want to Deposit" << OFFSET << "[" << atm->utils.formatValue(money) << "]" << OFFSET <<
-            "To Your Account?(Yes[1]/No[0]):\n" << OFFSET << "==> : ", cin >> cmd;
+            "To Your Account?(Yes[1]/No[0]):\n" << OFFSET << "==> : ", cmd = getch();
             if(cmd != '1') continue;
             atm->deposit(money);
             cout << OFFSET << BORDER << OFFSET << "Money has been Deposited!\n\n"; system(delay);
@@ -231,7 +232,7 @@ void transactionSegments(AtmMachine *atm, char cmd) { // Segment/Microservices o
                 cout << OFFSET << BORDER << OFFSET << "New Pin did not Match!\n\n"; system(delay);
                 continue;
             }
-            cout << "\n" << OFFSET << BORDER << OFFSET << "Are You Sure You Want to Change Your" << OFFSET << "Account Pin?(Yes[1]/No[0]):\n" << OFFSET << "==> : ", cin >> cmd;
+            cout << "\n" << OFFSET << BORDER << OFFSET << "Are You Sure You Want to Change Your" << OFFSET << "Account Pin?(Yes[1]/No[0]):\n" << OFFSET << "==> : ", cmd = getch();
             if(cmd != '1') continue;
             atm->changePin(newPin);
             cout << OFFSET << BORDER << OFFSET << "Account Pin has been Changed!\n\n"; system(delay);
@@ -258,7 +259,7 @@ void transactionSegments(AtmMachine *atm, char cmd) { // Segment/Microservices o
                     continue;
                 }
                 cout << OFFSET << BORDER << OFFSET << "Are You Sure You Want to Transfer" << OFFSET << "[" << atm->utils.formatValue(money) << "]" << OFFSET <<
-                "From Your Account?(Yes[1]/No[0]):\n" << OFFSET << "==> : ", cin >> cmd;
+                "From Your Account?(Yes[1]/No[0]):\n" << OFFSET << "==> : ", cmd = getch();
                 if(cmd != '1') continue;
                 atm->loadMobile(money);
                 cout << OFFSET << BORDER << OFFSET << "Successful Reload!\n\n"; system(delay);
@@ -295,7 +296,7 @@ void transactionSegments(AtmMachine *atm, char cmd) { // Segment/Microservices o
                     continue;
                 }
                 cout << OFFSET << BORDER << OFFSET << "Are You Sure You Want to Transfer" << OFFSET << "[" << atm->utils.formatValue(money) << "]" << OFFSET <<
-                "From Your Account?(Yes[1]/No[0]):\n" << OFFSET << "==> : ", cin >> cmd;
+                "From Your Account?(Yes[1]/No[0]):\n" << OFFSET << "==> : ", cmd = getch();
                 if(cmd != '1') continue;
                 system(clear);
                 cout << "\n" << assets[0];
@@ -312,7 +313,7 @@ void transactionBody(AtmMachine *atm, bool &exist) { // Main Transaction body of
     char cmd = '*';
     while(exist) {
         system(clear);
-        cout << "\n" << assets[0] << "\n" << assets[4] << OFFSET << "==> : ", cin >> cmd;
+        cout << "\n" << assets[0] << "\n" << assets[4] << OFFSET << "==> : ", cmd = getch();
         if(cmd == '0') exist = false;
         else transactionSegments(atm, cmd);
     }
@@ -372,6 +373,7 @@ void createDepositor(Utility utils) { // Create Depositor for the System
 }
 
 int main() { // Main.. eh
+    cin.tie(NULL);
     getAssets();
     initializeAllDepositors();
     Utility utils; AtmMachine atm = {utils};
@@ -380,7 +382,7 @@ int main() { // Main.. eh
     char ch = '*';
     for(string aNumber, pin; true;) {
         system(clear);
-        cout << "\n" << assets[0] << "\n" << assets[1] << OFFSET << "==> : ", cin >> ch;
+        cout << "\n" << assets[0] << "\n" << assets[1] << OFFSET << "==> : ", ch = getch();
         if(ch == '0') break;
         if(ch == '2') { createDepositor(utils); continue; }
         if(ch != '1') continue;
@@ -394,7 +396,9 @@ int main() { // Main.. eh
             system(clear);
             cout << "\n" << assets[0] << "\n" << assets[3] << OFFSET << "Attempt/s Left:" << attempt << OFFSET << BORDER << OFFSET <<
             "  Ex: 84231100" << OFFSET << "==> : ", cin >> aNumber;
+            if(aNumber == "-1") break;
             cout << OFFSET << "  Ex: 123456" << OFFSET << "==> : ", cin >> pin;
+            if(pin == "-1") break;
             exist = getDepositor(&atm, aNumber, pin);
             if(!exist) {
                 cout << OFFSET << BORDER << OFFSET << "Bank Account does not exist!";

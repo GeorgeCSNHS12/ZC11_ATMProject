@@ -13,7 +13,7 @@
                 ||   ||          Sign-Up Page         ||   ||
                 ||   ||   Please provide information  ||   ||
                 ||   ||     on the required fields    ||   ||
-                ||   ||   (-1 on any field to Exit):  ||   ||      
+                ||   ||   (-1 on any field to Exit):  ||   ||
                 ||   ===================================   ||
                 ||        [1] Last Name:                   ||
                 ||        [2] First Name:                  ||
