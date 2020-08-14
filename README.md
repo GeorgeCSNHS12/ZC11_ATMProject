@@ -4,8 +4,11 @@
 
 ###### Members:
 
-###### . George William Sison
+###### 
+..* George William Sison
 
-###### . Lanz Louie Nieva
+######
+..* Lanz Louie Nieva
 
-###### . Aristotle Alfonso
+######
+..* Aristotle Alfonso
